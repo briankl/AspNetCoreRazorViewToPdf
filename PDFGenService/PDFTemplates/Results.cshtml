@@ -1,19 +1,12 @@
-﻿<html xmlns="http://www.w3.org/1999/xhtml">
+﻿@using RazorLight;
+
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Test PDF</title>
-
-    <style>
-        body {
-            font-family: sans-serif;
-        }
-
-        h1 {
-            color: red
-        }
-    </style>
-
+    <title>Care Finder Results PDF</title>
+    @{ await IncludeAsync("_Styles.cshtml", null); }
 </head>
 <body>
+
     <h1>@Model.Title</h1>
 
     <p>@Model.Description</p>
