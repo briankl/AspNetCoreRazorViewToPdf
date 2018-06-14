@@ -13,16 +13,22 @@ namespace PDFGenService.Controllers
     [Route("api/[controller]")]
     public class PdfController : Controller
     {
+        private string _templatePath;
+
+        public PdfController()
+        {
+            _templatePath = $@"{Directory.GetCurrentDirectory()}\PDFTemplates";
+        }
+
         [HttpGet, Route("Download")]
         public async Task<IActionResult> Download([FromServices] INodeServices nodeServices)
         {
-            var templatePath = $@"{Directory.GetCurrentDirectory()}\PDFTemplates";
-            IRazorLightEngine razorEngine = new RazorLightEngineBuilder().UseFilesystemProject(templatePath).UseMemoryCachingProvider().Build();
+            IRazorLightEngine razorEngine = new RazorLightEngineBuilder().UseFilesystemProject(_templatePath).UseMemoryCachingProvider().Build();
 
             var model = new ResultsPdf
             {
                 Title = "Hello World",
-                Description = "Aliquam erat volutpat. Vestibulum ipsum leo, molestie nec ligula auctor, auctor facilisis justo. Aenean at bibendum lorem. Quisque ac nisl dolor. Vestibulum eu tortor vitae nisl pretium feugiat sed non neque."
+                Description = "This PDF is generated from a Razor view."
             };
 
             var pdfHtml = await razorEngine.CompileRenderAsync("Results.cshtml", model);
@@ -41,8 +47,7 @@ namespace PDFGenService.Controllers
         [HttpGet, Route("Share")]
         public async Task<IActionResult> Share([FromServices] INodeServices nodeServices)
         {
-            var templatePath = $@"{Directory.GetCurrentDirectory()}\PDFTemplates";
-            IRazorLightEngine razorEngine = new RazorLightEngineBuilder().UseFilesystemProject(templatePath).UseMemoryCachingProvider().Build();
+            IRazorLightEngine razorEngine = new RazorLightEngineBuilder().UseFilesystemProject(_templatePath).UseMemoryCachingProvider().Build();
 
             var model = new ResultsPdf
             {
