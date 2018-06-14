@@ -1,0 +1,16 @@
+{
+  "name": "pdfgenservice",
+  "version": "1.0.0",
+  "description": "simple service for generating pdf from a razor view",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Brian Lowry",
+  "license": "ISC",
+  "dependencies": {
+    "jsreport-core": "^2.0.3",
+    "jsreport-jsrender": "^2.0.0",
+    "jsreport-phantom-pdf": "^2.0.2"
+  }
+}
