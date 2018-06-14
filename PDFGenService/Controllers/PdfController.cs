@@ -13,25 +13,24 @@ namespace PDFGenService.Controllers
     [Route("api/[controller]")]
     public class PdfController : Controller
     {
-        private string _templatePath;
+        private RazorLightEngine _razorEngine;
 
         public PdfController()
         {
-            _templatePath = $@"{Directory.GetCurrentDirectory()}\PDFTemplates";
+            var templatePath = $@"{Directory.GetCurrentDirectory()}\PDFTemplates";
+            _razorEngine = new RazorLightEngineBuilder().UseFilesystemProject(templatePath).UseMemoryCachingProvider().Build();
         }
 
         [HttpGet, Route("Download")]
         public async Task<IActionResult> Download([FromServices] INodeServices nodeServices)
         {
-            IRazorLightEngine razorEngine = new RazorLightEngineBuilder().UseFilesystemProject(_templatePath).UseMemoryCachingProvider().Build();
-
             var model = new ResultsPdf
             {
                 Title = "Hello World",
                 Description = "This PDF is generated from a Razor view."
             };
 
-            var pdfHtml = await razorEngine.CompileRenderAsync("Results.cshtml", model);
+            var pdfHtml = await _razorEngine.CompileRenderAsync("Results.cshtml", model);
 
             var result = await nodeServices.InvokeAsync<byte[]>("./pdf", pdfHtml);
 
@@ -47,15 +46,13 @@ namespace PDFGenService.Controllers
         [HttpGet, Route("Share")]
         public async Task<IActionResult> Share([FromServices] INodeServices nodeServices)
         {
-            IRazorLightEngine razorEngine = new RazorLightEngineBuilder().UseFilesystemProject(_templatePath).UseMemoryCachingProvider().Build();
-
             var model = new ResultsPdf
             {
                 Title = "Hello World",
                 Description = "Aliquam erat volutpat. Vestibulum ipsum leo, molestie nec ligula auctor, auctor facilisis justo. Aenean at bibendum lorem. Quisque ac nisl dolor. Vestibulum eu tortor vitae nisl pretium feugiat sed non neque."
             };
 
-            var pdfHtml = await razorEngine.CompileRenderAsync("Results.cshtml", model);
+            var pdfHtml = await _razorEngine.CompileRenderAsync("Results.cshtml", model);
 
             var result = await nodeServices.InvokeAsync<byte[]>("./pdf", pdfHtml);
 
