@@ -1,6 +1,4 @@
-﻿@using RazorLight;
-
-<html xmlns="http://www.w3.org/1999/xhtml">
+﻿<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>Care Finder Results PDF</title>
     @{ await IncludeAsync("_Styles.cshtml", null); }
@@ -10,6 +8,13 @@
     <h1>@Model.Title</h1>
 
     <p>@Model.Description</p>
+
+    <ul>
+        @foreach(var item in Model.Results)
+        {
+            <li>@item</li>
+        }
+    </ul>
 
     <p>Timestamp: @DateTime.Now</p>
 </body>

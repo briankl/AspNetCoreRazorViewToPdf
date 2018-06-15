@@ -27,7 +27,13 @@ namespace PDFGenService.Controllers
             var model = new ResultsPdf
             {
                 Title = "Hello World",
-                Description = "This PDF is generated from a Razor view."
+                Description = "This PDF is generated from a Razor view.",
+                Results = new List<string>
+                {
+                    "List Item 1",
+                    "List Item 2",
+                    "List Item 3"
+                }
             };
 
             var pdfHtml = await _razorEngine.CompileRenderAsync("Results.cshtml", model);
@@ -43,22 +49,5 @@ namespace PDFGenService.Controllers
             return new ContentResult();
         }
 
-        [HttpGet, Route("Share")]
-        public async Task<IActionResult> Share([FromServices] INodeServices nodeServices)
-        {
-            var model = new ResultsPdf
-            {
-                Title = "Hello World",
-                Description = "Aliquam erat volutpat. Vestibulum ipsum leo, molestie nec ligula auctor, auctor facilisis justo. Aenean at bibendum lorem. Quisque ac nisl dolor. Vestibulum eu tortor vitae nisl pretium feugiat sed non neque."
-            };
-
-            var pdfHtml = await _razorEngine.CompileRenderAsync("Results.cshtml", model);
-
-            var result = await nodeServices.InvokeAsync<byte[]>("./pdf", pdfHtml);
-
-            // send email.
-
-            return Ok();
-        }
     }
 }
