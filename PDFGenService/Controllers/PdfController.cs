@@ -10,7 +10,7 @@ using RazorLight;
 
 namespace PDFGenService.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class PdfController : Controller
     {
         private RazorLightEngine _razorEngine;
